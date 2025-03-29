@@ -32,6 +32,11 @@ def create_timelapse_for_camera(subfolder, week_number, force_framerate=False):
         timelapse_filepath = (
             f"{timelapse_directory}/{subfolder}/forced_fps/{timelapse_filename}"
         )
+        
+        timelapse_directory_full = f"{timelapse_directory}/{subfolder}/forced_fps"
+        if not os.path.exists(timelapse_directory_full):
+            os.makedirs(timelapse_directory_full)
+
         subprocess.run(
             [
                 "ffmpeg",
@@ -50,6 +55,11 @@ def create_timelapse_for_camera(subfolder, week_number, force_framerate=False):
         timelapse_filepath = (
             f"{timelapse_directory}/{subfolder}/normal_fps/{timelapse_filename}"
         )
+
+        timelapse_directory_full = f"{timelapse_directory}/{subfolder}/normal_fps"
+        if not os.path.exists(timelapse_directory_full):
+            os.makedirs(timelapse_directory_full)
+
         subprocess.run(
             [
                 "ffmpeg",
