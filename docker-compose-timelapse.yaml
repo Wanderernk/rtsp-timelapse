@@ -1,5 +1,5 @@
 services:
-  python-service:
+  rtsp_timelapse:
     build: .
     volumes:
       - ./input:/app/input

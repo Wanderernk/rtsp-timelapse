@@ -1,5 +1,5 @@
 services:
-  python-service:
+  rtsp-recorder:
     build: .
     volumes:
       - ./input:/app/input
