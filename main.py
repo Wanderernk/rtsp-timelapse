@@ -112,7 +112,7 @@ def create_timelapse():
     for camera_ip_address in rtsp_ip_address:
         # Only create a timelapse once we have a weeks worth of photos
 
-        camera_dir = f"{images_directory}/{camera_ip_address}"
+        camera_dir = f"{camera_ip_address}"
 
         # Create the timelapse
         normal_timelapse_filepath = create_timelapse_for_camera(camera_dir, week_number)
