@@ -81,7 +81,7 @@ def main():
                 rtsp_path,
                 "-frames:v",
                 "1",
-                f"{camera_dir}/{datetime.now().strftime('%Y%m%d-%H%M%S')}.png",
+                f"{camera_dir}/{datetime.now().strftime('%Y%m%d-%W-%H%M%S')}.png",
             ]
         )
 
