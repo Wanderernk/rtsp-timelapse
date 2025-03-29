@@ -4,6 +4,8 @@ services:
     volumes:
       - ./input:/app/input
       - ./output:/app/output
-      - ./config.py:/app/config.py
+      - ./config.py:/app/config.py:ro
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
     environment:
       - PYTHONUNBUFFERED=1
