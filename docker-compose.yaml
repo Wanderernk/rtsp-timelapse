@@ -1,5 +1,5 @@
 services:
-  rtsp-recorder:
+  recorder:
     build: .
     volumes:
       - ./input:/app/input

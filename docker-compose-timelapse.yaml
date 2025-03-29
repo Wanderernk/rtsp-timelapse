@@ -1,5 +1,5 @@
 services:
-  rtsp_timelapse:
+  timelapse_creator:
     build: .
     volumes:
       - ./input:/app/input
