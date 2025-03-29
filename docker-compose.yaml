@@ -1,0 +1,9 @@
+services:
+  python-service:
+    build: .
+    volumes:
+      - ./input:/app/input
+      - ./output:/app/output
+      - ./config.py:/app/config.py
+    environment:
+      - PYTHONUNBUFFERED=1
