@@ -112,10 +112,10 @@ def create_timelapse():
     week_number_dec = datetime.now().isocalendar()[1]
     
     # calc previous week
-    if week_number_dec == 0:
-        week_number_dec = 52
-    else:
-        week_number_dec = week_number_dec - 1
+    # if week_number_dec == 0:
+    #     week_number_dec = 52
+    # else:
+    #     week_number_dec = week_number_dec - 1
 
     week_number = f"{week_number_dec:02d}"
 
