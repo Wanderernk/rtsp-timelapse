@@ -170,7 +170,7 @@ def record_stream():
                     rtsp_path,
                     "-frames:v",
                     "1",
-                    f"{stream_dir}/{week_number}/{datetime.now().strftime('%Y%m%d-%u-%H%M%S')}.png",
+                    f"{stream_dir}/{datetime.now().strftime('%Y%m%d-%u-%H%M%S')}.png",
                 ]
             )
         except subprocess.CalledProcessError as e:
