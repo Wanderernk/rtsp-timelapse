@@ -1,5 +1,5 @@
 # Dockerfile.multi-stage
-FROM python:3.13-slim
+FROM python:3.13-alpine
 
 COPY --from=mwader/static-ffmpeg:7.1 /ffmpeg /usr/local/bin/
 # RUN apk update && apk --no-cache add ffmpeg && rm -rf /var/cache/apk/*
