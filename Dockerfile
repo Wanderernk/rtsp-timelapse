@@ -1,7 +1,7 @@
 # Dockerfile.multi-stage
 FROM python:3.13-alpine as builder
 
-RUN apt-get update && apt-get install ffmpeg -y && rm -rf /var/lib/apt/lists/* && rm -rf /var/cache/apk/*
+RUN apt update && apt add ffmpeg -y && rm -rf /var/lib/apt/lists/* && rm -rf /var/cache/apk/*
 
 WORKDIR /app
 
