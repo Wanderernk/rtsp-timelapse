@@ -75,6 +75,24 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
 
 def create_timelapse():
     
+    """
+    Creates a timelapse from images in the input directory and sends it to
+    the configured Apprise services.
+
+    It creates a timelapse for each camera in the config, and only creates
+    a timelapse once we have a weeks worth of photos.
+
+    It sends the timelapse to the Apprise services with a title and body.
+    The title is "Timelapse", and the body is "Видео за <week_number> неделю. <stream_name>".
+    The message is sent with the timelapse as an attachment.
+
+    It also deletes the images in the input directory after sending the
+    timelapse.
+
+    :param None:
+
+    :return: None
+    """
     streams = config.streams
     
     week_number_dec = datetime.now().isocalendar()[1]
@@ -152,7 +170,7 @@ def record_stream():
                     rtsp_path,
                     "-frames:v",
                     "1",
-                    f"{stream_dir}/{datetime.now().strftime('%Y%m%d-%V-%u-%H%M%S')}.png",
+                    f"{stream_dir}/{week_number}/{datetime.now().strftime('%Y%m%d-%u-%H%M%S')}.png",
                 ]
             )
         except subprocess.CalledProcessError as e:
