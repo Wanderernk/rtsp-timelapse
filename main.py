@@ -151,7 +151,7 @@ def record_stream():
     # read array of credentials and ips from config file
     for stream in stream:
         print("=========================================")
-        print("Starting to record stream {stream['stream_name']}")
+        print(f"Starting to record stream {stream['stream_name']}")
         rtsp_path = stream.get("stream_url")
         stream_dir = f"{images_directory}/{stream.get('stream_name')}/{week_number}"
         

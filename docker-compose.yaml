@@ -10,3 +10,9 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
       - appmode=recorder
+    networks:
+      - rtspRecorderNetwork
+
+networks:
+  rtspRecorderNetwork:
+    driver: bridge
