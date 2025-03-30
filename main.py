@@ -99,7 +99,7 @@ def record_stream():
                     rtsp_path,
                     "-frames:v",
                     "1",
-                    f"{stream_dir}/{datetime.now().strftime('%Y%m%d-%W-%w-%H%M%S')}.png",
+                    f"{stream_dir}/{datetime.now().strftime('%Y%m%d-%V-%u-%H%M%S')}.png",
                 ]
             )
         except subprocess.CalledProcessError as e:
@@ -116,7 +116,7 @@ def create_timelapse():
     if week_number_dec == 1:
         week_number_dec = 52
     else:
-        week_number_dec = week_number_dec - 2
+        week_number_dec = week_number_dec - 1
 
     week_number = f"{week_number_dec:02d}"
 
