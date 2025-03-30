@@ -1,7 +1,7 @@
 # Dockerfile.multi-stage
 FROM python:3.13.2-alpine as builder
 
-RUN apk update && apk add ffmpeg -y && rm -rf /var/cache/apk/*
+RUN apk update && apk add ffmpeg && rm -rf /var/cache/apk/*
 
 WORKDIR /app
 
@@ -12,7 +12,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Stage 2: Production
-FROM python:3.13-alpine
+FROM python:3.13.2-alpine
 
 # Set the working directory# Check the Dockerfile for any potential issues
 WORKDIR /app
