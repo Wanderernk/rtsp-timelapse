@@ -10,7 +10,7 @@ images_directory = "input"
 timelapse_directory = "output"
 
 
-def create_timelapse_for_camera(subfolder, week_number, force_framerate=False):
+def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
     """
     Uses ffmpeg to stitch all images in a directory (in datetime order) together
     to make a timelapse.
@@ -73,21 +73,21 @@ def create_timelapse_for_camera(subfolder, week_number, force_framerate=False):
     return timelapse_filepath
 
 
-def main():
+def record_stream():
+
+    stream = config.streams
 
     # read array of credentials and ips from config file
-    rtsp_username = config.rtsp_username
-    rtsp_password = config.rtsp_password
-
-    rtsp_ip_address = config.ip_cameras
-
-    for camera_ip_address in rtsp_ip_address:
-        rtsp_path = (
-            f"rtsp://{rtsp_username}:{rtsp_password}@{camera_ip_address}/stream1"
-        )
-        camera_dir = f"{images_directory}/{camera_ip_address}"
-        if not os.path.exists(camera_dir):
-            os.makedirs(camera_dir)
+    for stream in stream:
+        # rtsp_path = (
+        #     f"rtsp://{rtsp_username}:{rtsp_password}@{camera}/stream1"
+        # )
+        
+        rtsp_path = stream.get("stream_url")
+        stream_dir = f"{images_directory}/{stream.get('stream_name')}"
+        
+        if not os.path.exists(stream_dir):
+            os.makedirs(stream_dir)
 
         # Use ffmpeg to connect to the rtsp stream and save 1 frame
         # ffmpeg -i <stream> -vframes 1 <output>
@@ -99,7 +99,7 @@ def main():
                     rtsp_path,
                     "-frames:v",
                     "1",
-                    f"{camera_dir}/{datetime.now().strftime('%Y%m%d-%W-%w-%H%M%S')}.png",
+                    f"{stream_dir}/{datetime.now().strftime('%Y%m%d-%W-%w-%H%M%S')}.png",
                 ]
             )
         except subprocess.CalledProcessError as e:
@@ -107,7 +107,8 @@ def main():
 
 
 def create_timelapse():
-    rtsp_ip_address = config.ip_cameras
+    
+    streams = config.streams
     
     week_number_dec = datetime.now().isocalendar()[1]
     
@@ -119,38 +120,40 @@ def create_timelapse():
 
     week_number = f"{week_number_dec:02d}"
 
-    for camera_ip_address in rtsp_ip_address:
+    for stream in streams:
         # Only create a timelapse once we have a weeks worth of photos
 
-        camera_dir = f"{camera_ip_address}"
+        stream_dir = f"{stream.get('stream_name')}"
 
         # Create the timelapse
-        normal_timelapse_filepath = create_timelapse_for_camera(camera_dir, week_number)
+        normal_timelapse_filepath = create_timelapse_for_stream(stream_dir, week_number)
         # forced_fps_timelapse_filepath = create_timelapse_for_camera(camera_dir, week_number, force_framerate=True)
 
-        # Create an Apprise instance
-        app = apprise.Apprise()
+        if os.path.exists(normal_timelapse_filepath):
+            # Create an Apprise instance
+            app = apprise.Apprise()
 
-        for service in config.apprise_services:
-            app.add(service)
+            for service in config.apprise_services:
+                app.add(service)
 
-        attachments = [
-            normal_timelapse_filepath,
-            # forced_fps_timelapse_filepath,
-        ]
+            attachments = [
+                normal_timelapse_filepath,
+                # forced_fps_timelapse_filepath,
+            ]
 
-        # Send the message to the Apprise services
-        print(f"Sending notification with {attachments}")
-        app.notify(body="Weekly timelapse", title="Timelapse", attach=attachments)
+            # Send the message to the Apprise services
+            print(f"Sending notification with {attachments}")
+            app.notify(body=f"Видео за {week_number_dec} неделю. Поток {stream.get('stream_name')}", title="Timelapse", attach=attachments)
 
-        # Delete the images
-        # print("Starting deletion")
-        # for image_file in image_files:
-        #     image_filepath = f"{images_directory}/{image_file}"
-        #     if os.path.exists(image_filepath):
-        #         print(f"Deleting {image_filepath}")
-        #         os.remove(image_filepath)
-
+            # Delete the images
+            # print("Starting deletion")
+            # for image_file in image_files:
+            #     image_filepath = f"{images_directory}/{image_file}"
+            #     if os.path.exists(image_filepath):
+            #         print(f"Deleting {image_filepath}")
+            #         os.remove(image_filepath)
+        else:
+            print(f"No timelapse created for {stream_dir} for week {week_number}")
 
 if __name__ == "__main__":
     
@@ -159,4 +162,4 @@ if __name__ == "__main__":
     if appmode == "timelapse":
         create_timelapse()
     else:
-        main()
+        record_stream()
