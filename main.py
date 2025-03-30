@@ -112,10 +112,10 @@ def create_timelapse():
     week_number_dec = datetime.now().isocalendar()[1]
     
     # calc previous week
-    # if week_number_dec == 0:
-    #     week_number_dec = 52
-    # else:
-    #     week_number_dec = week_number_dec - 1
+    if week_number_dec == 1:
+        week_number_dec = 52
+    else:
+        week_number_dec = week_number_dec - 2
 
     week_number = f"{week_number_dec:02d}"
 
@@ -126,7 +126,7 @@ def create_timelapse():
 
         # Create the timelapse
         normal_timelapse_filepath = create_timelapse_for_camera(camera_dir, week_number)
-        forced_fps_timelapse_filepath = create_timelapse_for_camera(camera_dir, week_number, force_framerate=True)
+        # forced_fps_timelapse_filepath = create_timelapse_for_camera(camera_dir, week_number, force_framerate=True)
 
         # Create an Apprise instance
         app = apprise.Apprise()
@@ -136,7 +136,7 @@ def create_timelapse():
 
         attachments = [
             normal_timelapse_filepath,
-            forced_fps_timelapse_filepath,
+            # forced_fps_timelapse_filepath,
         ]
 
         # Send the message to the Apprise services
