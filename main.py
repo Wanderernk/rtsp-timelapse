@@ -45,7 +45,7 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
                 "-pattern_type",
                 "glob",
                 "-i",
-                f"{images_directory}/{subfolder}/*-{week_number}-*.png",
+                f"{images_directory}/{subfolder}/{week_number}/*.png",
                 f"{timelapse_directory}/{subfolder}/forced_fps/{timelapse_filename}",
             ]
         )
@@ -66,44 +66,11 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
                 "-pattern_type",
                 "glob",
                 "-i",
-                f"{images_directory}/{subfolder}/*-{week_number}-*.png",
+                f"{images_directory}/{subfolder}/{week_number}/*.png",
                 f"{timelapse_directory}/{subfolder}/normal_fps/{timelapse_filename}",
             ]
         )
     return timelapse_filepath
-
-
-def record_stream():
-
-    stream = config.streams
-
-    # read array of credentials and ips from config file
-    for stream in stream:
-        # rtsp_path = (
-        #     f"rtsp://{rtsp_username}:{rtsp_password}@{camera}/stream1"
-        # )
-        
-        rtsp_path = stream.get("stream_url")
-        stream_dir = f"{images_directory}/{stream.get('stream_name')}"
-        
-        if not os.path.exists(stream_dir):
-            os.makedirs(stream_dir)
-
-        # Use ffmpeg to connect to the rtsp stream and save 1 frame
-        # ffmpeg -i <stream> -vframes 1 <output>
-        try:
-            subprocess.run(
-                [
-                    "ffmpeg",
-                    "-i",
-                    rtsp_path,
-                    "-frames:v",
-                    "1",
-                    f"{stream_dir}/{datetime.now().strftime('%Y%m%d-%V-%u-%H%M%S')}.png",
-                ]
-            )
-        except subprocess.CalledProcessError as e:
-            print(f"Error: {e}")
 
 
 def create_timelapse():
@@ -143,7 +110,7 @@ def create_timelapse():
 
             # Send the message to the Apprise services
             print(f"Sending notification with {attachments}")
-            app.notify(body=f"Видео за {week_number_dec} неделю. Поток {stream.get('stream_name')}", title="Timelapse", attach=attachments)
+            app.notify(body=f"Видео за {week_number_dec} неделю. {stream.get('stream_name')}", title="Timelapse", attach=attachments)
 
             # Delete the images
             # print("Starting deletion")
@@ -154,6 +121,43 @@ def create_timelapse():
             #         os.remove(image_filepath)
         else:
             print(f"No timelapse created for {stream_dir} for week {week_number}")
+
+
+def record_stream():
+
+    stream = config.streams
+
+    week_number_dec = datetime.now().isocalendar()[1]
+    week_number = f"{week_number_dec:02d}"
+    
+    # read array of credentials and ips from config file
+    for stream in stream:
+        # rtsp_path = (
+        #     f"rtsp://{rtsp_username}:{rtsp_password}@{camera}/stream1"
+        # )
+        
+        rtsp_path = stream.get("stream_url")
+        stream_dir = f"{images_directory}/{stream.get('stream_name')}/{week_number}"
+        
+        if not os.path.exists(stream_dir):
+            os.makedirs(stream_dir)
+
+        # Use ffmpeg to connect to the rtsp stream and save 1 frame
+        # ffmpeg -i <stream> -frames:v 1 <output>
+        try:
+            subprocess.run(
+                [
+                    "ffmpeg",
+                    "-i",
+                    rtsp_path,
+                    "-frames:v",
+                    "1",
+                    f"{stream_dir}/{datetime.now().strftime('%Y%m%d-%V-%u-%H%M%S')}.png",
+                ]
+            )
+        except subprocess.CalledProcessError as e:
+            print(f"Error: {e}")
+
 
 if __name__ == "__main__":
     
