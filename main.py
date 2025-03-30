@@ -150,10 +150,6 @@ def record_stream():
     
     # read array of credentials and ips from config file
     for stream in stream:
-        # rtsp_path = (
-        #     f"rtsp://{rtsp_username}:{rtsp_password}@{camera}/stream1"
-        # )
-        
         rtsp_path = stream.get("stream_url")
         stream_dir = f"{images_directory}/{stream.get('stream_name')}/{week_number}"
         
