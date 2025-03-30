@@ -50,6 +50,8 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
             ]
         )
     else:
+        framerate = "24"
+        print(f"Creating timelapse at {framerate}fps")
         print(f"Creating a normal timelapse")
         timelapse_filename = f"{datetime.now().strftime('%Y%m%d-%H%M%S')}.mp4"
         timelapse_filepath = (
@@ -63,6 +65,8 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
         subprocess.run(
             [
                 "ffmpeg",
+                "-r",
+                framerate,
                 "-pattern_type",
                 "glob",
                 "-i",
