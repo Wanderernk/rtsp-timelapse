@@ -1,6 +1,6 @@
 import apprise
 import config
-import glob
+# import glob
 import os
 import subprocess
 from datetime import datetime
@@ -150,12 +150,15 @@ def record_stream():
     
     # read array of credentials and ips from config file
     for stream in stream:
+        print("=========================================")
+        print("Starting to record stream {stream['stream_name']}")
         rtsp_path = stream.get("stream_url")
         stream_dir = f"{images_directory}/{stream.get('stream_name')}/{week_number}"
         
         if not os.path.exists(stream_dir):
             os.makedirs(stream_dir)
 
+        print(f"Stream dir is {stream_dir}")
         # Use ffmpeg to connect to the rtsp stream and save 1 frame
         # ffmpeg -i <stream> -frames:v 1 <output>
         try:
@@ -169,6 +172,8 @@ def record_stream():
                     f"{stream_dir}/{datetime.now().strftime('%Y%m%d-%u-%H%M%S')}.png",
                 ]
             )
+            print("Finished recording stream")
+
         except subprocess.CalledProcessError as e:
             print(f"Error: {e}")
 
