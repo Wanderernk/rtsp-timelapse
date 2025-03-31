@@ -50,3 +50,6 @@ deleted.
 Two copies of the timelapse will be created in the **output** directory.
 - normal_timelapse - This contains timelapses at the default framerate - 24fps
 - forced_fps - This contains timelapses at a framerate of 60fps
+
+# ToDo
+- [ ] merge two docker compose files into one
