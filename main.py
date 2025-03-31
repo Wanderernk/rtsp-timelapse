@@ -117,7 +117,7 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
     return timelapse_filepath
 
 
-def create_timelapse():
+def create_timelapse(for_prev_week=False):
     
     """
     Creates a timelapse from images in the input directory and sends it to
@@ -142,10 +142,11 @@ def create_timelapse():
     week_number_dec = datetime.now().isocalendar()[1]
     
     # calc previous week
-    if week_number_dec == 1:
-        week_number_dec = 52
-    else:
-        week_number_dec = week_number_dec - 1
+    if for_prev_week:
+        if week_number_dec == 1:
+            week_number_dec = 52
+        else:
+            week_number_dec = week_number_dec - 1
 
     week_number = f"{week_number_dec:02d}"
 
@@ -224,9 +225,10 @@ def record_stream():
 
 if __name__ == "__main__":
     
-    appmode = os.environ['appmode']
+    appmode = os.getenv('appmode','recorder')
+    for_prev_week = os.getenv('for_prev_week', False)
     
     if appmode == "timelapse":
-        create_timelapse()
+        create_timelapse(for_prev_week)
     else:
         record_stream()

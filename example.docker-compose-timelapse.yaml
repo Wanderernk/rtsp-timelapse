@@ -10,6 +10,7 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
       - appmode=timelapse
+      - for_prev_week=True
     networks:
       - rtspTimelapseNetwork
 
