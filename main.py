@@ -23,26 +23,26 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
     # ffmpeg -pattern_type glob -i "*.png" output/<output>
     # ffmpeg -r 60 -pattern_type glob -i "*.png" output/<output>
 
+    time_moment = f"{datetime.now().strftime('%Y%m%d-%H%M%S')}
+
     image_files = []
     for day_number in range(1,5):
         for hour in range(8,20):
             image_files += glob.glob(f"{images_directory}/{subfolder}/{week_number}/*-{day_number}-{hour:02d}*.png")
-    
     image_files = sorted(image_files)
     
-    index_filename = f"{subfolder}-index.txt"
-
+    index_filename = f"{timelapse_directory}/{subfolder}/{time_moment}-index.txt"
     with open(index_filename, "w") as f:
         for image_file in image_files:
             f.write(f"{image_file}\n")    
-    print(f"Created index.txt with {len(image_files)} images")
+    print(f"Created {index_filename} with {len(image_files)} images")
     
     if force_framerate:
         framerate = "60"
         print(f"Creating timelapse at {framerate}fps")
-        timelapse_filename = (
-            f"{datetime.now().strftime('%Y%m%d-%H%M%S')}_fps_{framerate}.mp4"
-        )
+    
+        timelapse_filename = f"{time_moment}_fps_{framerate}.mp4"   
+
         timelapse_filepath = (
             f"{timelapse_directory}/{subfolder}/forced_fps/{timelapse_filename}"
         )
@@ -60,7 +60,7 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
                 "glob",
                 "-i",
                 # f"{images_directory}/{subfolder}/{week_number}/*.png",
-                index_filename,
+                f"'{index_filename}'",
 				"-c:v",
 				"libx264",
 				"-crf",
@@ -90,7 +90,9 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
         framerate = "24"
         print(f"Creating timelapse at {framerate}fps")
         print(f"Creating a normal timelapse")
-        timelapse_filename = f"{datetime.now().strftime('%Y%m%d-%H%M%S')}.mp4"
+
+        timelapse_filename = f"{time_moment}_fps_{framerate}.mp4"   
+
         timelapse_filepath = (
             f"{timelapse_directory}/{subfolder}/normal_fps/{timelapse_filename}"
         )
@@ -108,7 +110,7 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
                 "glob",
                 "-i",
                 # f"{images_directory}/{subfolder}/{week_number}/*.png",
-                index_filename,
+                f"'{index_filename}'",
 				"-c:v",
 				"libx264",
 				"-crf",
