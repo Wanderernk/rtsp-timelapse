@@ -50,9 +50,7 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
         timelapse_directory_full = f"{timelapse_directory}/{subfolder}/forced_fps"
         if not os.path.exists(timelapse_directory_full):
             os.makedirs(timelapse_directory_full)
-        
-        subprocess.run(
-            [
+        params = [
                 "ffmpeg",
                 "-r",
                 framerate,
@@ -85,6 +83,9 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
 				"2",
                 timelapse_filepath,
             ]
+        print(f"Running {' '.join(params)}")
+        subprocess.run(
+            params
         )
     else:
         framerate = "24"
@@ -101,8 +102,7 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
         if not os.path.exists(timelapse_directory_full):
             os.makedirs(timelapse_directory_full)
 
-        subprocess.run(
-            [
+        params = [
                 "ffmpeg",
                 "-r",
                 framerate,
@@ -135,6 +135,9 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
 				"2",
                 timelapse_filepath,
             ]
+        print(f"Running {' '.join(params)}")
+        subprocess.run(
+            params
         )
     return timelapse_filepath
 
