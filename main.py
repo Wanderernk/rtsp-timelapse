@@ -23,7 +23,7 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
     # ffmpeg -pattern_type glob -i "*.png" output/<output>
     # ffmpeg -r 60 -pattern_type glob -i "*.png" output/<output>
 
-    time_moment = f"{datetime.now().strftime('%Y%m%d-%H%M%S')}
+    time_moment = f"{datetime.now().strftime('%Y%m%d-%H%M%S')}"
 
     image_files = []
     for day_number in range(1,5):
