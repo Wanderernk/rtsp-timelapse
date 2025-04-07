@@ -83,6 +83,8 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
 				"-ac", 
 				"2",
                 f"'{timelapse_filepath}'",
+                "-loglevel",
+                "debug"
             ]
         print(f"Running {' '.join(params)}")
         subprocess.run(
@@ -135,6 +137,8 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
 				"-ac", 
 				"2",
                 f"'{timelapse_filepath}'",
+                "-loglevel",
+                "debug"
             ]
         print(f"Running {' '.join(params)}")
         subprocess.run(
