@@ -23,6 +23,8 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
     # ffmpeg -pattern_type glob -i "*.png" output/<output>
     # ffmpeg -r 60 -pattern_type glob -i "*.png" output/<output>
 
+    print("=========================================================")
+
     time_moment = f"{datetime.now().strftime('%Y%m%d-%H%M%S')}"
 
     image_files = []
@@ -59,7 +61,7 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
                 "-safe",
                 "0",
                 "-i",
-                f"'{index_filename}'",
+                f"{index_filename}",
 				"-c:v",
 				"libx264",
 				"-crf",
@@ -82,7 +84,7 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
 				"aac", 
 				"-ac", 
 				"2",
-                f"'{timelapse_filepath}'",
+                f"{timelapse_filepath}",
                 "-loglevel",
                 "debug"
             ]
@@ -136,7 +138,7 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
 				"aac", 
 				"-ac", 
 				"2",
-                f"'{timelapse_filepath}'",
+                f"{timelapse_filepath}",
                 "-loglevel",
                 "debug"
             ]
