@@ -27,7 +27,7 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
 
     image_files = []
     for day_number in range(1,5):
-        for hour in range(8,20):
+        for hour in range(7,21):
             image_files += glob.glob(f"{images_directory}/{subfolder}/{week_number}/*-{day_number}-{hour:02d}*.png")
     image_files = sorted(image_files)
     
