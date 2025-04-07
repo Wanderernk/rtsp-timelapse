@@ -25,7 +25,7 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
 
     print("=========================================================")
 
-    watermark = f"drawtext=text='{subfolder}':fontcolor=white:fontsize=24:fontfile=arialbd.ttf:box=1:boxcolor=black@0.5:boxborderw=5:x=(w-text_w)/2:y=h-th-10"
+    watermark = f"drawtext=text='{subfolder}':fontcolor=white:fontsize=48:fontfile=arialbd.ttf:box=1:boxcolor=black@0.5:boxborderw=5:x=(w-text_w)/2:y=h-th-10"
     time_moment = f"{datetime.now().strftime('%Y%m%d-%H%M%S')}"
 
     image_files = []
