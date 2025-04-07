@@ -34,7 +34,7 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
     index_filename = f"{timelapse_directory}/{subfolder}/{time_moment}-index.txt"
     with open(index_filename, "w") as f:
         for image_file in image_files:
-            f.write(f"{image_file}\n")    
+            f.write(f"file '{image_file}'\n")    
     print(f"Created {index_filename} with {len(image_files)} images")
     
     if force_framerate:
@@ -54,8 +54,10 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
                 "ffmpeg",
                 "-r",
                 framerate,
-                "-pattern_type",
-                "glob",
+                # "-pattern_type",
+                # "glob",
+                "-f",
+                "concat",
                 "-i",
                 # f"{images_directory}/{subfolder}/{week_number}/*.png",
                 f"'{index_filename}'",
@@ -106,8 +108,10 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
                 "ffmpeg",
                 "-r",
                 framerate,
-                "-pattern_type",
-                "glob",
+                # "-pattern_type",
+                # "glob",
+                "-f",
+                "concat",
                 "-i",
                 # f"{images_directory}/{subfolder}/{week_number}/*.png",
                 f"'{index_filename}'",
