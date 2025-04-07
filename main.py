@@ -113,7 +113,7 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
                 # "-safe",
                 # "0",
                 "-i",
-                f"'{index_filename}'",
+                f"{index_filename}",
 				"-c:v",
 				"libx264",
 				"-crf",
