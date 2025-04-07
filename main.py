@@ -44,7 +44,7 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
         timelapse_filename = f"{time_moment}_fps_{framerate}.mp4"   
 
         timelapse_filepath = (
-            f"{timelapse_directory}/{subfolder}/forced_fps/{timelapse_filename}"
+            f"'{timelapse_directory}/{subfolder}/forced_fps/{timelapse_filename}'"
         )
         
         timelapse_directory_full = f"{timelapse_directory}/{subfolder}/forced_fps"
@@ -58,7 +58,7 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
                 # "glob",
                 "-f",
                 "concat",
-                "safe",
+                "-safe",
                 "0",
                 "-i",
                 # f"{images_directory}/{subfolder}/{week_number}/*.png",
@@ -99,7 +99,7 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
         timelapse_filename = f"{time_moment}_fps_{framerate}.mp4"   
 
         timelapse_filepath = (
-            f"{timelapse_directory}/{subfolder}/normal_fps/{timelapse_filename}"
+            f"'{timelapse_directory}/{subfolder}/normal_fps/{timelapse_filename}'"
         )
 
         timelapse_directory_full = f"{timelapse_directory}/{subfolder}/normal_fps"
@@ -114,7 +114,7 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
                 # "glob",
                 "-f",
                 "concat",
-                "safe",
+                "-safe",
                 "0",
                 "-i",
                 # f"{images_directory}/{subfolder}/{week_number}/*.png",
