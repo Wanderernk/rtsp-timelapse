@@ -1,6 +1,6 @@
 import apprise
 import config
-# import glob
+import glob
 import os
 import subprocess
 from datetime import datetime
@@ -23,6 +23,20 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
     # ffmpeg -pattern_type glob -i "*.png" output/<output>
     # ffmpeg -r 60 -pattern_type glob -i "*.png" output/<output>
 
+    image_files = []
+    for day_number in range(1,5):
+        for hour in range(8,20):
+            image_files += glob.glob(f"{images_directory}/{subfolder}/{week_number}/*-{day_number}-{hour:02d}*.png")
+    
+    image_files = sorted(image_files)
+    
+    index_filename = f"{subfolder}-index.txt"
+
+    with open(index_filename, "w") as f:
+        for image_file in image_files:
+            f.write(f"{image_file}\n")    
+    print(f"Created index.txt with {len(image_files)} images")
+    
     if force_framerate:
         framerate = "60"
         print(f"Creating timelapse at {framerate}fps")
@@ -36,7 +50,7 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
         timelapse_directory_full = f"{timelapse_directory}/{subfolder}/forced_fps"
         if not os.path.exists(timelapse_directory_full):
             os.makedirs(timelapse_directory_full)
-
+        
         subprocess.run(
             [
                 "ffmpeg",
@@ -45,11 +59,14 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
                 "-pattern_type",
                 "glob",
                 "-i",
-                f"{images_directory}/{subfolder}/{week_number}/*.png",
+                # f"{images_directory}/{subfolder}/{week_number}/*.png",
+                index_filename,
 				"-c:v",
 				"libx264",
 				"-crf",
 				"23",
+                "-vf",
+                "scale=-1:720",
 				"-maxrate",
 				"4.5M",
 				"-preset",
@@ -90,11 +107,14 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
                 "-pattern_type",
                 "glob",
                 "-i",
-                f"{images_directory}/{subfolder}/{week_number}/*.png",
+                # f"{images_directory}/{subfolder}/{week_number}/*.png",
+                index_filename,
 				"-c:v",
 				"libx264",
 				"-crf",
 				"23",
+				"-vf",
+                "scale=-1:720",
 				"-maxrate",
 				"4.5M",
 				"-preset",
