@@ -217,7 +217,6 @@ def create_timelapse(for_prev_week=False):
             #         os.remove(image_filepath)
         else:
             print(f"No timelapse created for {stream_dir} for week {week_number}")
-        break
 
 def record_stream():
 
