@@ -25,11 +25,12 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
 
     print("=========================================================")
 
+    # watermark = f"drawtext=text='{subfolder}':fontcolor=white:fontsize=48:fontfile=arialbd.ttf:box=1:boxcolor=black@0.5:boxborderw=5:x=(w-text_w)/2:y=h-th-10"
     watermark = f"drawtext=text='{subfolder}':fontcolor=white:fontsize=48:fontfile=arialbd.ttf:box=1:boxcolor=black@0.5:boxborderw=5:x=(w-text_w)/2:y=h-th-10"
     time_moment = f"{datetime.now().strftime('%Y%m%d-%H%M%S')}"
 
     image_files = []
-    for day_number in range(1,5):
+    for day_number in range(1,6):
         for hour in range(7,21):
             image_files += [os.path.basename(x) for x in glob.glob(f"{images_directory}/{subfolder}/{week_number}/*-{day_number}-{hour:02d}*.png")]
     image_files = sorted(image_files)
