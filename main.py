@@ -28,10 +28,10 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
     image_files = []
     for day_number in range(1,5):
         for hour in range(7,21):
-            image_files += glob.glob(f"{images_directory}/{subfolder}/{week_number}/*-{day_number}-{hour:02d}*.png")
+            image_files += [os.path.basename(x) for x in glob.glob(f"{images_directory}/{subfolder}/{week_number}/*-{day_number}-{hour:02d}*.png")]
     image_files = sorted(image_files)
     
-    index_filename = f"{time_moment}-index.txt"
+    index_filename = f"{images_directory}/{subfolder}/{week_number}/{time_moment}-index.txt"
     with open(index_filename, "w") as f:
         for image_file in image_files:
             f.write(f"file '{image_file}'\n")    
