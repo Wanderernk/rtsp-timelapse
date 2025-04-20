@@ -95,7 +95,7 @@ def create_timelapse_for_stream(subfolder, week_number, force_framerate=False):
             params
         )
     else:
-        framerate = "24"
+        framerate = "16"
         print(f"Creating timelapse at {framerate}fps")
 
         timelapse_filename = f"{time_moment}_fps_{framerate}.mp4"   

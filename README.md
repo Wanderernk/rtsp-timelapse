@@ -4,15 +4,44 @@ Connects to an RTSP stream, takes a photo, and stitches it together to make a ti
 Then sends a the timelapse video to your favourite service [using Apprise](https://github.com/caronc/apprise).
 
 ## Hardware
-- Personally, I have this running on a Raspberry Pi (any model will probably do)
-- An IP camera that supports RTSP
+- Raspberry Pi (any model will probably do) or x86 Linux/Windows system
+- An IP camera or Recorder that supports RTSP
 
-## Installation
+## Service description
+Service consists of the following parts:
+
+### Config file
+Used for setting the RTSP stream details: IP and RTSP names, and Apprise services. 
+Also RTSP names used for folder names.
+
+### Recorder
+Recorder is a service that takes a photo from the RTSP stream and saves it to a directory. It is used to create the timelapse.
+The service is configured in the docker-compose.yml file. It should be started with `docker-compose up -d`
+
+### Timelapse
+The timelapse service makes a video from the images in the input directory for desired camera and time. By default it creates a timelapse for the previous week. After creating it send the video to the configured Apprise services.
+For usage copy example.docker-compose-timelapse.yml to docker-compose-timelapse.yml. And run `docker-compose -f docker-compose-timelapse.yml up -d`
+
+## Usage in docker
+
+1. Copy example.config.py to config.py
+2. Update config.py with your RTSP stream details and Apprise services
+3. Copy example.docker-compose.yml to docker-compose.yml
+4. Copy example.docker-compose-timelapse.yml to docker-compose-timelapse.yml
+5. Run `docker-compose up -d` for build and run Recorder service
+6. Run `docker-compose -f docker-compose-timelapse.yml up -d` for build and run Timelapse service
+7. Add a cron job to run the Timelapse container service every week. For example:
+```bash
+45 8 1 * * docker start timelapse
+```
+
+
+## Development
 - Create a python3 virtual environment and install the project's requirements:
 ```
-$ python3 -m venv rtsp_timelapse
-$ source rtsp_timelapse/bin/activate
-(rtsp_timelapse) $ pip install -r requirements.txt
+$ python3 -m venv .venv
+$ source .venv/bin/activate
+(.venv) $ pip install -r requirements.txt
 ```
 - You will also need [ffmpeg](https://ffmpeg.org/) installed on your machine.  This can usually be
 installed using a package manager.  For example:
@@ -53,3 +82,4 @@ Two copies of the timelapse will be created in the **output** directory.
 
 # ToDo
 - [ ] merge two docker compose files into one
+- [ ] set framerate setting to environment variable
